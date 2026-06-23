@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(255, 170, 42, 0.2);
+  color: #ffffff;
+}
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #0C0C0E; /* Clean unAbyss dark base */
+  }
+}
+
+/* ── Uniform Dark unAbyss Canvas Base ── */
+html, body, #root {
+  background-color: #0C0C0E;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Fine structural unAbyss canvas grain noise overlay */
+#root::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.15;
+  z-index: 40;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ── Seamless Smooth Ambient Mesh Lighting ── */
+.ambience-lens-flare {
+  background: radial-gradient(circle at 50% 30%, rgba(255, 170, 42, 0.04) 0%, rgba(12, 12, 14, 0) 65%),
+              radial-gradient(ellipse 80% 50% at 50% 15%, rgba(148, 152, 166, 0.02) 0%, transparent 80%);
+}
+
+.ambience-blend-secondary {
+  background: radial-gradient(circle 700px at 30% 20%, rgba(148, 152, 166, 0.02) 0%, transparent 100%),
+              radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255, 170, 42, 0.01) 0%, transparent 90%);
+}
+
+/* ── Wavy Terrain Topology Streaming Forward Animation Loop ── */
+@keyframes terrainStreamingForward {
+  from { background-position: 0 0; }
+  to   { background-position: 0 160px; }
+}
+
+.animate-terrain-stream {
+  animation: terrainStreamingForward 22s linear infinite;
+}
+
+/* ── Matte Brushed Metallic Button ── */
+.btn-metallic {
+  background: linear-gradient(135deg, #b0b4c0 0%, #888c9a 40%, #c0c4cc 60%, #9094a0 100%);
+  color: #000000;
+  text-shadow: 0 0.5px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-metallic:hover {
+  background: linear-gradient(135deg, #c0c4cc 0%, #989aaa 40%, #d8dce6 60%, #a0a5b0 100%);
+  box-shadow: 0 0 20px rgba(160, 165, 176, 0.15), 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Thin desaturated edge frames */
+.frame-silver {
+  border: 1px solid rgba(160, 165, 176, 0.08);
+}
+
+.frame-silver-hover:hover {
+  border-color: rgba(160, 165, 176, 0.18);
+}
+
+.horizon-line {
+  background: linear-gradient(90deg, transparent 0%, rgba(160, 165, 176, 0.06) 35%, rgba(255, 255, 255, 0.12) 50%, rgba(160, 165, 176, 0.06) 65%, transparent 100%);
+}
+
+/* Volumetric Floating Effect for the core artifact */
+@keyframes artifactHoverFloat {
+  0%, 100% { transform: translateY(0px) rotateX(10deg) rotateY(-8deg); }
+  50%      { transform: translateY(-12px) rotateX(14deg) rotateY(-4deg); }
+}
+
+.animate-artifact-hover {
+  animation: artifactHoverFloat 6s ease-in-out infinite;
+}
