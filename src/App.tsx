@@ -87,18 +87,33 @@ export default function App() {
     setStatus('sending');
     
     try {
-      const { supabase } = await import('./lib/supabase');
-      const { error } = await supabase.from('contact_submissions').insert([form]);
-      if (error) throw error;
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          access_key: "8c33c634-d1ea-4445-9e6d-967b7c1376d2",
+          name: form.name,
+          email: form.email,
+          company: form.company,
+          title: form.role,
+          message: form.message,
+          subject: `New CoreLink Lead Sub: ${form.company}`
+        })
+      });
       
-      setStatus('done');
-      setForm({ name: '', email: '', company: '', role: '', message: '' });
-    } catch (err) {
-      console.warn("Database credentials unconfigured. Simulating secure demo response routing.");
-      setTimeout(() => {
+      const resData = await response.json();
+      if (resData.success) {
         setStatus('done');
         setForm({ name: '', email: '', company: '', role: '', message: '' });
-      }, 800);
+      } else {
+        throw new Error("Relay rejected packet submission transfer.");
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('fail');
     }
   };
 
@@ -285,6 +300,11 @@ export default function App() {
                 <label className="block text-xs font-medium text-slate-400 mb-2">Message</label>
                 <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full bg-[#0C0C0E] border border-white/5 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all resize-none" />
               </div>
+              
+              {status === 'fail' && (
+                <p className="text-xs text-red-400">Submission transmission failed. Please review values or email us directly.</p>
+              )}
+
               <button type="submit" disabled={status === 'sending'} className="btn-metallic w-full font-medium py-4 rounded-lg text-[15px]">
                 {status === 'sending' ? 'Sending...' : 'Book My Walkthrough'}
               </button>
