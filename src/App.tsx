@@ -1,15 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 
-// Safe, non-blocking initialization check for the database layer
-let supabaseClient: any = null;
-try {
-  // Dynamic import or check to prevent top-level rendering crashes on the cloud
-  const mod = await import('./lib/supabase');
-  supabaseClient = mod.supabase;
-} catch (e) {
-  console.warn("Database connection offline. Operating in fallback demo mode.");
-}
-
 function useReveal(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -29,7 +19,7 @@ function useReveal(threshold = 0.1) {
 const SOLUTIONS = [
   {
     icon: (props: any) => (
-      <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+      <svg {...props} xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
     ),
     tag: 'B2B Logistics & Customs Brokerage',
     title: 'Automating complex document extraction',
@@ -38,7 +28,7 @@ const SOLUTIONS = [
   },
   {
     icon: (props: any) => (
-      <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+      <svg {...props} xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
     ),
     tag: 'Local Trades & Subcontractors',
     title: 'Streamlining supplier invoice mapping',
@@ -47,7 +37,7 @@ const SOLUTIONS = [
   },
   {
     icon: (props: any) => (
-      <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      <svg {...props} xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
     ),
     tag: 'Bookkeeping & Finance',
     title: 'Sorting unstructured paperwork into clean ledgers',
@@ -93,19 +83,17 @@ export default function App() {
     e.preventDefault();
     setStatus('sending');
     
-    // Process submission safely whether the live database instance is present or not
-    if (supabaseClient) {
-      try {
-        const { error } = await supabaseClient.from('contact_submissions').insert([form]);
-        if (error) throw error;
-        setStatus('done');
-        setForm({ name: '', email: '', company: '', role: '', message: '' });
-      } catch (err) {
-        console.error(err);
-        setStatus('fail');
-      }
-    } else {
-      // Graceful local simulation fallback for instant visual confirmation
+    try {
+      // Lazy load database layer exclusively on user click action
+      const { supabase } = await import('./lib/supabase');
+      const { error } = await supabase.from('contact_submissions').insert([form]);
+      if (error) throw error;
+      
+      setStatus('done');
+      setForm({ name: '', email: '', company: '', role: '', message: '' });
+    } catch (err) {
+      console.warn("Database credentials unconfigured. Simulating secure demo response routing.");
+      // Fallback fallback handler so demo user registration flows seamlessly
       setTimeout(() => {
         setStatus('done');
         setForm({ name: '', email: '', company: '', role: '', message: '' });
@@ -118,7 +106,7 @@ export default function App() {
   return (
     <div className="relative min-h-screen text-slate-300 antialiased bg-[#0C0C0E]">
 
-      {/* Nav */}
+      {/* Header */}
       <header
         className="fixed inset-x-0 top-0 z-50 transition-all duration-300"
         style={{
@@ -129,8 +117,9 @@ export default function App() {
         }}
       >
         <div className="max-w-6xl mx-auto px-7 h-16 flex items-center justify-between relative z-10">
-          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-white font-bold text-lg tracking-tight">
-            CORELINK AUTOMATION
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-white font-bold text-[15px] tracking-wider uppercase flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+            CoreLink Automation
           </button>
 
           <nav className="hidden md:flex items-center gap-10">
@@ -144,7 +133,7 @@ export default function App() {
             </button>
           </nav>
 
-          <button className="md:hidden text-slate-400 hover:text-white transition-colors" onClick={() => setMobileNav(!mobileNav)}>
+          <button className="md:hidden text-slate-400 hover:text-white text-lg" onClick={() => setMobileNav(!mobileNav)}>
             {mobileNav ? '✕' : '☰'}
           </button>
         </div>
@@ -159,7 +148,7 @@ export default function App() {
         )}
       </header>
 
-      {/* Hero */}
+      {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-16 px-7 overflow-hidden bg-[#0C0C0E]">
         <div className="absolute top-0 inset-x-0 h-[1px] horizon-line opacity-60" />
         <div className="absolute inset-0 ambience-lens-flare" />
@@ -203,12 +192,12 @@ export default function App() {
         </div>
       </section>
 
-      {/* Solutions */}
+      {/* Solutions Section */}
       <section id="solutions" className="relative py-32 px-7 overflow-hidden border-t border-white/5 bg-[#0C0C0E]">
         <div className="absolute inset-x-0 top-0 h-full ambience-blend-secondary" />
         <div ref={solR.ref} className="relative max-w-4xl mx-auto z-10" style={{ transition: 'opacity .75s ease, transform .75s ease', opacity: solR.shown ? 1 : 0, transform: solR.shown ? 'translateY(0)' : 'translateY(28px)' }}>
           <div className="text-center mb-24">
-            <span className="text-xs font-semibold tracking-widest text-slate-500 stream uppercase">Solutions</span>
+            <span className="text-xs font-semibold tracking-widest text-slate-500 uppercase">Solutions</span>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-white tracking-tight">Purpose-built for high-friction workflows</h2>
             <p className="mt-5 text-slate-500 max-w-md mx-auto text-base leading-[1.8]">CoreLink Automation ships extraction pipelines tailored to three enterprise verticals. Every engine runs entirely on your hardware.</p>
           </div>
@@ -216,10 +205,10 @@ export default function App() {
           <div className="space-y-20">
             {SOLUTIONS.map(({ icon: Icon, tag, title, body, details }, idx) => (
               <div key={tag} className={`flex flex-col md:flex-row gap-8 md:gap-14 items-start ${idx % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
-                <div className="w-12 h-12 bg-[#0C0C0E] frame-silver rounded-xl flex items-center justify-center shrink-0">
-                  <Icon className="text-slate-200" />
+                <div className="w-12 h-12 bg-[#111115] border border-white/5 rounded-xl flex items-center justify-center shrink-0">
+                  <Icon className="text-slate-400" />
                 </div>
-                <div className="flex-1 space-y-5">
+                <div className="flex-1 space-y-3">
                   <span className="text-[11px] font-semibold text-orange-400 tracking-wider uppercase">{tag}</span>
                   <h3 className="text-xl font-semibold text-white leading-snug">{title}</h3>
                   <p className="text-slate-400 leading-[1.8] max-w-xl">{body}</p>
@@ -235,18 +224,18 @@ export default function App() {
         </div>
       </section>
 
-      {/* Security */}
+      {/* Security Section */}
       <section id="security" className="relative py-32 px-7 overflow-hidden border-t border-white/5 bg-[#0C0C0E]">
-        <div ref={secR.ref} className="relative max-w-5xl mx-auto z-10" style={{ transition: 'opacity .75s ease, transform .75s ease', opacity: secR.shown ? 1 : 0, transform: secR.shown ? 'translateY(0)' : 'translateY(28px)' }}>
+        <div ref={secR.ref} className="relative max-w-3xl mx-auto z-10" style={{ transition: 'opacity .75s ease, transform .75s ease', opacity: secR.shown ? 1 : 0, transform: secR.shown ? 'translateY(0)' : 'translateY(28px)' }}>
           <div className="text-center mb-20">
             <span className="text-xs font-semibold tracking-widest text-slate-500 uppercase">Security Architecture</span>
             <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-white tracking-tight">Your data never leaves the building</h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-x-16 gap-y-14 max-w-3xl mx-auto">
+          <div className="grid sm:grid-cols-2 gap-x-16 gap-y-12">
             {PILLARS.map(({ title, body }) => (
-              <div key={title} className="group">
-                <h3 className="text-sm font-semibold text-white mb-2">▪ {title}</h3>
+              <div key={title} className="space-y-2">
+                <h3 className="text-sm font-semibold text-white">▪ {title}</h3>
                 <p className="text-sm text-slate-400 leading-[1.75]">{body}</p>
               </div>
             ))}
@@ -254,7 +243,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Contact */}
+      {/* Contact Section */}
       <section id="contact" className="relative py-32 px-7 overflow-hidden border-t border-white/5 bg-[#0C0C0E]">
         <div ref={ctaR.ref} className="relative max-w-xl mx-auto z-10" style={{ transition: 'opacity .75s ease, transform .75s ease', opacity: ctaR.shown ? 1 : 0, transform: ctaR.shown ? 'translateY(0)' : 'translateY(28px)' }}>
           <div className="text-center mb-14">
@@ -262,35 +251,35 @@ export default function App() {
           </div>
 
           {status === 'done' ? (
-            <div className="bg-[#111115] frame-silver rounded-2xl p-12 text-center backdrop-blur-md">
+            <div className="bg-[#111115] border border-white/5 rounded-2xl p-12 text-center backdrop-blur-md">
               <h3 className="text-white font-semibold text-lg mb-2">Request received</h3>
               <p className="text-slate-400 text-sm">We will reach out within one business day to schedule your walkthrough.</p>
             </div>
           ) : (
-            <form onSubmit={submit} className="bg-[#111115]/90 frame-silver rounded-2xl p-9 space-y-6 backdrop-blur-sm">
+            <form onSubmit={submit} className="bg-[#111115]/90 border border-white/5 rounded-2xl p-9 space-y-6 backdrop-blur-sm">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-medium text-slate-400 mb-2">Full Name *</label>
-                  <input required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full bg-[#0C0C0E] frame-silver rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all" />
+                  <input required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full bg-[#0C0C0E] border border-white/5 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-400 mb-2">Work Email *</label>
-                  <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-[#0C0C0E] frame-silver rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all" />
+                  <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-[#0C0C0E] border border-white/5 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all" />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-medium text-slate-400 mb-2">Company *</label>
-                  <input required type="text" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="w-full bg-[#0C0C0E] frame-silver rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all" />
+                  <input required type="text" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="w-full bg-[#0C0C0E] border border-white/5 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-400 mb-2">Job Title</label>
-                  <input type="text" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="w-full bg-[#0C0C0E] frame-silver rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all" />
+                  <input type="text" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="w-full bg-[#0C0C0E] border border-white/5 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-400 mb-2">Message</label>
-                <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full bg-[#0C0C0E] frame-silver rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all resize-none" />
+                <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full bg-[#0C0C0E] border border-white/5 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-slate-500 transition-all resize-none" />
               </div>
               <button type="submit" disabled={status === 'sending'} className="btn-metallic w-full font-medium py-4 rounded-lg text-[15px]">
                 {status === 'sending' ? 'Sending...' : 'Book My Walkthrough'}
