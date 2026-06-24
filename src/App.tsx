@@ -93,7 +93,6 @@ export default function App() {
       setForm({ name: '', email: '', company: '', role: '', message: '' });
     } catch (err) {
       console.warn("Database credentials unconfigured. Simulating secure demo response routing.");
-      // Fallback fallback handler so demo user registration flows seamlessly
       setTimeout(() => {
         setStatus('done');
         setForm({ name: '', email: '', company: '', role: '', message: '' });
@@ -106,7 +105,7 @@ export default function App() {
   return (
     <div className="relative min-h-screen text-slate-300 antialiased bg-[#0C0C0E]">
 
-      {/* Header */}
+      {/* ═══════════════ NAV (Restored Original Vector Branding) ═══════════════ */}
       <header
         className="fixed inset-x-0 top-0 z-50 transition-all duration-300"
         style={{
@@ -117,9 +116,8 @@ export default function App() {
         }}
       >
         <div className="max-w-6xl mx-auto px-7 h-16 flex items-center justify-between relative z-10">
-          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-white font-bold text-[15px] tracking-wider uppercase flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            CoreLink Automation
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center group">
+            <img src="/src/assets/White_logo_-_no_background.svg" alt="CoreLink Automation" className="h-10 opacity-70 group-hover:opacity-100 transition-opacity duration-200" />
           </button>
 
           <nav className="hidden md:flex items-center gap-10">
@@ -289,8 +287,10 @@ export default function App() {
         </div>
       </section>
 
-      <footer className="relative border-t border-white/5 py-10 px-7 bg-[#0C0C0E] text-center text-xs text-slate-500">
-        © 2026 CoreLink Automation. All rights reserved. On-premise. Zero cloud exposure.
+      {/* Footer */}
+      <footer className="relative border-t border-white/5 py-10 px-7 bg-[#0C0C0E] text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between max-w-6xl mx-auto gap-4">
+        <img src="/src/assets/White_logo_-_no_background.svg" alt="CoreLink Automation" className="h-8 opacity-60" />
+        <p>© 2026 CoreLink Automation. All rights reserved. On-premise. Zero cloud exposure.</p>
       </footer>
     </div>
   );
