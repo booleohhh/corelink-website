@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 
+// Explicitly import the vector branding layout so Vite hooks it safely during cloud builds
+import navbarLogo from './assets/White_logo_-_no_background.svg';
+
 function useReveal(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -84,7 +87,6 @@ export default function App() {
     setStatus('sending');
     
     try {
-      // Lazy load database layer exclusively on user click action
       const { supabase } = await import('./lib/supabase');
       const { error } = await supabase.from('contact_submissions').insert([form]);
       if (error) throw error;
@@ -105,7 +107,7 @@ export default function App() {
   return (
     <div className="relative min-h-screen text-slate-300 antialiased bg-[#0C0C0E]">
 
-      {/* ═══════════════ NAV (Restored Original Vector Branding) ═══════════════ */}
+      {/* Header */}
       <header
         className="fixed inset-x-0 top-0 z-50 transition-all duration-300"
         style={{
@@ -117,7 +119,11 @@ export default function App() {
       >
         <div className="max-w-6xl mx-auto px-7 h-16 flex items-center justify-between relative z-10">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center group">
-            <img src="/src/assets/White_logo_-_no_background.svg" alt="CoreLink Automation" className="h-10 opacity-70 group-hover:opacity-100 transition-opacity duration-200" />
+            <img 
+              src={navbarLogo} 
+              alt="CoreLink Automation" 
+              className="h-9 opacity-85 group-hover:opacity-100 transition-opacity duration-200" 
+            />
           </button>
 
           <nav className="hidden md:flex items-center gap-10">
@@ -289,7 +295,11 @@ export default function App() {
 
       {/* Footer */}
       <footer className="relative border-t border-white/5 py-10 px-7 bg-[#0C0C0E] text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between max-w-6xl mx-auto gap-4">
-        <img src="/src/assets/White_logo_-_no_background.svg" alt="CoreLink Automation" className="h-8 opacity-60" />
+        <img 
+          src={navbarLogo} 
+          alt="CoreLink Automation" 
+          className="h-7 opacity-50" 
+        />
         <p>© 2026 CoreLink Automation. All rights reserved. On-premise. Zero cloud exposure.</p>
       </footer>
     </div>
