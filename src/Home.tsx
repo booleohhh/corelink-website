@@ -272,21 +272,9 @@ export default function Home() {
             <Mark3D />
           </div>
 
-          <div className="lg:absolute lg:left-0 lg:bottom-0 max-w-sm z-10">
-            <p className="text-[15px] leading-[1.6] text-slate-300">
-              Most AI advice is hype, or a big engagement you don't need. We look at your real workflows, tell you honestly what's worth automating, and build the ones that are.
-            </p>
-            <p className={`${label} mt-3`}>Free opportunity scan · Fixed-fee builds · Scoped upfront</p>
-          </div>
-
-          <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 bottom-0 flex-col items-center gap-1">
-            <span className="text-4xl font-light text-orange-400 tracking-tight leading-none">01–03</span>
-            <span className={label}>Scan · Build · Maintain</span>
-          </div>
-
-          <div className="mt-8 lg:mt-0 lg:absolute lg:right-0 lg:bottom-0 flex flex-col sm:flex-row gap-3 z-10">
-            <a href={PHONE_HREF} className="btn-pill btn-pill-line text-sm px-6 py-3">Call {PHONE_DISPLAY}</a>
-            <button onClick={() => go('contact')} className="btn-pill btn-pill-solid text-sm px-6 py-3">
+          <div className="mt-8 lg:mt-0 lg:absolute lg:inset-x-0 lg:bottom-0 flex flex-col sm:flex-row justify-center gap-3 z-10">
+            <a href={PHONE_HREF} className="btn-pill btn-pill-line text-sm py-3 w-full sm:w-64">Call {PHONE_DISPLAY}</a>
+            <button onClick={() => go('contact')} className="btn-pill btn-pill-solid text-sm py-3 w-full sm:w-64">
               Book my opportunity scan <span aria-hidden="true">↗</span>
             </button>
           </div>
