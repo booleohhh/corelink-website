@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(255, 170, 42, 0.25);
+  color: #ffffff;
+}
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif; /* same stack as the logistics page */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #0c0c0e;
+    color: #ededf0;
+  }
+}
+
+html, body, #root {
+  background-color: #0c0c0e;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Buttons: pill shaped (in the components layer so utilities like `hidden` still win) ── */
+@layer components {
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-pill-solid {
+    background: #ededf0;
+    color: #0c0c0e;
+  }
+
+  .btn-pill-solid:hover {
+    background: #ffffff;
+    box-shadow: 0 0 28px rgba(237, 237, 240, 0.22);
+  }
+
+  .btn-pill-solid:disabled {
+    opacity: 0.6;
+  }
+
+  .btn-pill-line {
+    border: 1px solid rgba(237, 237, 240, 0.28);
+    color: #ededf0;
+  }
+
+  .btn-pill-line:hover {
+    border-color: rgba(237, 237, 240, 0.7);
+    background: rgba(237, 237, 240, 0.05);
+  }
+}
+
+/* ── Hero centrepiece: the CoreLink mark as an extruded 3D object ── */
+.mark-scene {
+  position: relative;
+  width: clamp(230px, 36vw, 440px);
+  aspect-ratio: 1;
+  perspective: 1100px;
+}
+
+/* Light bloom behind the mark */
+.mark-scene::before {
+  content: '';
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 62% 38%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.06) 30%, transparent 62%);
+  filter: blur(8px);
+}
+
+.mark-scroll,
+.mark-spin {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+/* --turn is set from the page's scroll position */
+.mark-scroll {
+  transform: rotateX(16deg) rotateY(calc(var(--turn, 0) * 1deg));
+}
+
+@keyframes markSway {
+  from { transform: rotateY(-34deg) rotateZ(-3deg); }
+  to   { transform: rotateY(34deg) rotateZ(3deg); }
+}
+
+.mark-spin {
+  animation: markSway 9s ease-in-out infinite alternate;
+}
+
+.mark-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark-spin { animation: none; transform: rotateY(-24deg); }
+  .mark-scroll { transform: rotateX(16deg); }
+}

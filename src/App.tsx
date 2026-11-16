@@ -142,6 +142,7 @@ export default function App() {
           </button>
 
           <nav className="hidden md:flex items-center gap-10">
+            <a href="/" className="text-sm text-slate-400 hover:text-white transition-colors duration-200">← CoreLink AI</a>
             {navLinks.map(([id, label]) => (
               <button key={id} onClick={() => go(id)} className="text-sm text-slate-400 hover:text-white transition-colors duration-200">
                 {label}
@@ -159,6 +160,7 @@ export default function App() {
 
         {mobileNav && (
           <div className="md:hidden bg-[#0C0C0E]/95 border-b border-white/5 px-7 pb-5 flex flex-col gap-4 backdrop-blur-md">
+            <a href="/" className="text-sm text-slate-400 hover:text-white transition-colors text-left py-1">← CoreLink AI</a>
             {navLinks.map(([id, label]) => (
               <button key={id} onClick={() => go(id)} className="text-sm text-slate-400 hover:text-white transition-colors text-left py-1">{label}</button>
             ))}
@@ -320,7 +322,7 @@ export default function App() {
           alt="CoreLink Automation" 
           className="h-7 opacity-50" 
         />
-        <p>© 2026 CoreLink Automation. All rights reserved. On-premise. Zero cloud exposure.</p>
+        <p>© 2026 CoreLink Automation. All rights reserved. On-premise. Zero cloud exposure. · <a href="/" className="hover:text-slate-300 transition-colors">Part of CoreLink AI</a></p>
       </footer>
     </div>
   );
