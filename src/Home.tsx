@@ -84,7 +84,7 @@ const CREDENTIALS = [
   "Auckland based. We'd rather tell you something isn't worth automating than sell you a project that doesn't pay for itself.",
 ];
 
-const EMAIL = 'contact@corelink.co.nz';
+const EMAIL = 'contact@corelinkautomation.co.nz';
 const PHONE_DISPLAY = '022 387 9945';
 const PHONE_HREF = 'tel:0223879945';
 
