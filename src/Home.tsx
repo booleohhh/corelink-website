@@ -79,7 +79,8 @@ const STAGES = [
 ];
 
 const CREDENTIALS = [
-  "Registered NZ company, GST-registered. CoreLink Automation, our AI document-extraction product, already serves freight forwarders and customs brokers — this isn't theoretical.",
+  'You deal directly with Joshua Irwin, founder and director. The person who scopes your project is the person who builds it.',
+  'Registered NZ company, GST-registered. We built CoreLink Automation, our own document-checking product for freight forwarders and customs brokers, so you can see working software before you commit to anything.',
   'Hands-on manufacturing and logistics background, not just software — we understand the floor as well as the code.',
   "Auckland based. We'd rather tell you something isn't worth automating than sell you a project that doesn't pay for itself.",
 ];
@@ -355,7 +356,7 @@ export default function Home() {
             <span className="text-[11px] font-semibold text-orange-400 tracking-wider uppercase">B2B Logistics &amp; Customs Brokerage</span>
             <h3 className="mt-4 text-3xl sm:text-4xl font-normal text-white tracking-tight">CoreLink Automation</h3>
             <p className="mt-4 leading-[1.7] max-w-xl mx-auto">
-              Secure, air-gapped document extraction for freight forwarders and customs brokers. Commercial invoices, bills of lading and packing lists parsed entirely on your own hardware, with zero cloud exposure.
+              Reads commercial invoices, bills of lading and packing lists, cross-checks them and flags mismatches before they hold up cargo. It runs entirely on your own hardware, so nothing leaves your business.
             </p>
             <span className="mt-8 btn-pill btn-pill-line text-sm px-6 py-3 group-hover:border-white/70">
               Explore the logistics platform <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
@@ -429,16 +430,16 @@ export default function Home() {
             )}
           </div>
 
-          <dl className="mt-14 grid grid-cols-2 sm:grid-cols-3 gap-6 text-center">
+          <dl className="mt-14 flex flex-wrap justify-center gap-x-12 gap-y-6 text-center">
             <div>
               <dt className={`${label} mb-1`}>Email</dt>
-              <dd><a href={`mailto:${EMAIL}`} className="text-[15px] text-white hover:text-orange-400 transition-colors break-words">{EMAIL}</a></dd>
+              <dd><a href={`mailto:${EMAIL}`} className="text-[15px] text-white hover:text-orange-400 transition-colors whitespace-nowrap">{EMAIL}</a></dd>
             </div>
             <div>
               <dt className={`${label} mb-1`}>Phone</dt>
-              <dd><a href={PHONE_HREF} className="text-[15px] text-white hover:text-orange-400 transition-colors">{PHONE_DISPLAY}</a></dd>
+              <dd><a href={PHONE_HREF} className="text-[15px] text-white hover:text-orange-400 transition-colors whitespace-nowrap">{PHONE_DISPLAY}</a></dd>
             </div>
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               <dt className={`${label} mb-1`}>Based in</dt>
               <dd className="text-[15px] text-white">Auckland, NZ</dd>
             </div>

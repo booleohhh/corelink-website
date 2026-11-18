@@ -19,35 +19,36 @@ function useReveal(threshold = 0.1) {
   return { ref, shown };
 }
 
-const SOLUTIONS = [
+const STEPS = [
   {
-    icon: (props: any) => (
-      <svg {...props} xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-    ),
-    tag: 'B2B Logistics & Customs Brokerage',
-    title: 'Automating complex document extraction',
-    body: 'Commercial invoices, bills of lading, packing lists, and HS code classifications — all parsed on-premise from PDF and scanned documents. Zero third-party exposure, zero cloud dependency.',
-    details: ['BOL & AWB auto-parsing', 'HS code classification', 'Customs declaration prefill', 'Multi-format ingestion pipeline'],
+    n: '01',
+    tag: 'Read',
+    title: 'Pulls the data out of your shipping documents',
+    body: 'Commercial invoices, bills of lading and packing lists are read straight from PDFs and scans, so nobody has to retype them.',
   },
   {
-    icon: (props: any) => (
-      <svg {...props} xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
-    ),
-    tag: 'Local Trades & Subcontractors',
-    title: 'Streamlining supplier invoice mapping',
-    body: 'Map supplier invoices and purchase orders straight into your accounting system. Extract line items, quantities, and vendor details from unstructured documents across any trade vertical.',
-    details: ['Line-item extraction', 'Vendor deduplication', 'PO matching engine', 'Tolerance & variance flagging'],
+    n: '02',
+    tag: 'Cross-check',
+    title: 'Compares the documents against each other',
+    body: "The same shipment should say the same thing on every document. CoreLink lines the three up and flags anything that doesn't match, before it becomes a hold at the border.",
   },
   {
-    icon: (props: any) => (
-      <svg {...props} xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-    ),
-    tag: 'Bookkeeping & Finance',
-    title: 'Sorting unstructured paperwork into clean ledgers',
-    body: 'Classify financial documents into structured ledger entries. Eliminate manual categorisation of bank statements, receipts, and expense reports with configurable chart-of-accounts mapping.',
-    details: ['Transaction categorisation', 'Chart-of-accounts mapping', 'Receipt OCR & filing', 'Reconciliation-ready export'],
+    n: '03',
+    tag: 'Report',
+    title: 'Hands back a clear report and the data',
+    body: 'You get a one-page mismatch report for each batch, along with the extracted data, ready to use.',
   },
 ];
+
+const CHECK_STEPS = [
+  { title: 'Send about 10 past shipments', body: 'The commercial invoice, bill of lading and packing list for each. Anonymised is fine.' },
+  { title: 'We run them through CoreLink', body: 'Read and cross-checked on our own hardware. Nothing goes to a cloud service.' },
+  { title: 'You get the results', body: 'A one-page mismatch report and the extracted data. Free, and nothing is kept.' },
+];
+
+const EMAIL = 'contact@corelinkautomation.co.nz';
+const PHONE_DISPLAY = '022 387 9945';
+const PHONE_HREF = 'tel:0223879945';
 
 const PILLARS = [
   { title: 'Docker-packaged deployment', body: 'The entire inference stack ships as a self-contained Docker image. No external registries pulled at runtime. Install once, run indefinitely.' },
@@ -68,6 +69,7 @@ export default function App() {
 
   const heroR = useReveal(0.05);
   const solR = useReveal(0.08);
+  const chkR = useReveal(0.08);
   const secR = useReveal(0.08);
   const ctaR = useReveal(0.1);
 
@@ -117,7 +119,7 @@ export default function App() {
     }
   };
 
-  const navLinks: [string, string][] = [['solutions', 'Solutions'], ['security', 'Security'], ['contact', 'Contact']];
+  const navLinks: [string, string][] = [['what-it-does', 'What it does'], ['free-check', 'Free check'], ['security', 'Security'], ['contact', 'Contact']];
 
   return (
     <div className="relative min-h-screen text-slate-300 antialiased bg-[#0C0C0E]">
@@ -141,15 +143,15 @@ export default function App() {
             />
           </button>
 
-          <nav className="hidden md:flex items-center gap-10">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-10 whitespace-nowrap">
             <a href="/" className="text-sm text-slate-400 hover:text-white transition-colors duration-200">← CoreLink AI</a>
             {navLinks.map(([id, label]) => (
               <button key={id} onClick={() => go(id)} className="text-sm text-slate-400 hover:text-white transition-colors duration-200">
                 {label}
               </button>
             ))}
-            <button onClick={() => go('contact')} className="btn-metallic text-sm font-medium px-6 py-2 rounded-lg backdrop-blur-sm">
-              Book Walkthrough
+            <button onClick={() => go('free-check')} className="btn-metallic text-sm font-medium px-5 py-2 rounded-lg backdrop-blur-sm whitespace-nowrap">
+              Free check
             </button>
           </nav>
 
@@ -164,7 +166,7 @@ export default function App() {
             {navLinks.map(([id, label]) => (
               <button key={id} onClick={() => go(id)} className="text-sm text-slate-400 hover:text-white transition-colors text-left py-1">{label}</button>
             ))}
-            <button onClick={() => go('contact')} className="btn-metallic text-sm font-medium px-6 py-3 rounded-lg w-full text-center">Book Walkthrough</button>
+            <button onClick={() => go('free-check')} className="btn-metallic text-sm font-medium px-6 py-3 rounded-lg w-full text-center">Free check</button>
           </div>
         )}
       </header>
@@ -193,54 +195,77 @@ export default function App() {
           style={{ transition: 'opacity .85s ease, transform .85s ease', opacity: heroR.shown ? 1 : 0, transform: heroR.shown ? 'translateY(0)' : 'translateY(24px)' }}
         >
           <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.12] tracking-tight mb-7">
-            Secure, Air-Gapped AI Automation
+            Catch document mismatches
             <br />
-            <span className="bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent">For Enterprise Operations.</span>
+            <span className="bg-gradient-to-r from-white via-slate-200 to-slate-500 bg-clip-text text-transparent">before they hold your cargo.</span>
           </h1>
 
           <p className="text-lg text-slate-400 max-w-lg mx-auto leading-[1.8] mb-12">
-            Deploy completely offline data-extraction engines directly onto your local hardware. Eliminate manual data entry with zero cloud data liability.
+            CoreLink Automation reads your commercial invoices, bills of lading and packing lists, cross-checks them and flags anything that doesn't match. It runs on your own computers, so nothing leaves your business.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button onClick={() => go('contact')} className="btn-metallic group inline-flex items-center gap-2.5 font-medium px-8 py-4 rounded-lg text-[15px]">
-              Book My Walkthrough →
+              Get my free 10-shipment check →
             </button>
-            <button onClick={() => go('solutions')} className="inline-flex items-center gap-2 text-slate-400 hover:text-white px-6 py-4 rounded-lg transition-colors duration-200 text-[15px] frame-silver frame-silver-hover bg-white/[0.01]">
-              Explore Solutions
+            <button onClick={() => go('what-it-does')} className="inline-flex items-center gap-2 text-slate-400 hover:text-white px-6 py-4 rounded-lg transition-colors duration-200 text-[15px] frame-silver frame-silver-hover bg-white/[0.01]">
+              See what it does
             </button>
           </div>
         </div>
       </section>
 
-      {/* Solutions Section */}
-      <section id="solutions" className="relative py-32 px-7 overflow-hidden border-t border-white/5 bg-[#0C0C0E]">
+      {/* What it does */}
+      <section id="what-it-does" className="relative py-32 px-7 overflow-hidden border-t border-white/5 bg-[#0C0C0E]">
         <div className="absolute inset-x-0 top-0 h-full ambience-blend-secondary" />
         <div ref={solR.ref} className="relative max-w-4xl mx-auto z-10" style={{ transition: 'opacity .75s ease, transform .75s ease', opacity: solR.shown ? 1 : 0, transform: solR.shown ? 'translateY(0)' : 'translateY(28px)' }}>
-          <div className="text-center mb-24">
-            <span className="text-xs font-semibold tracking-widest text-slate-500 uppercase">Solutions</span>
-            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-white tracking-tight">Purpose-built for high-friction workflows</h2>
-            <p className="mt-5 text-slate-500 max-w-md mx-auto text-base leading-[1.8]">CoreLink Automation ships extraction pipelines tailored to three enterprise verticals. Every engine runs entirely on your hardware.</p>
+          <div className="text-center mb-20">
+            <span className="text-xs font-semibold tracking-widest text-slate-500 uppercase">What it does</span>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-white tracking-tight">Three documents in, one mismatch report out</h2>
+            <p className="mt-5 text-slate-500 max-w-md mx-auto text-base leading-[1.8]">Built for freight forwarders and customs brokers. Everything runs on hardware you already own.</p>
           </div>
 
-          <div className="space-y-20">
-            {SOLUTIONS.map(({ icon: Icon, tag, title, body, details }, idx) => (
-              <div key={tag} className={`flex flex-col md:flex-row gap-8 md:gap-14 items-start ${idx % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
-                <div className="w-12 h-12 bg-[#111115] border border-white/5 rounded-xl flex items-center justify-center shrink-0">
-                  <Icon className="text-slate-400" />
+          <div className="grid md:grid-cols-3 gap-6">
+            {STEPS.map(({ n, tag, title, body }) => (
+              <div key={n} className="bg-[#111115] border border-white/5 rounded-2xl p-8 space-y-3">
+                <div className="flex items-baseline gap-3">
+                  <span className="text-2xl font-semibold text-orange-400 tabular-nums">{n}</span>
+                  <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase">{tag}</span>
                 </div>
-                <div className="flex-1 space-y-3">
-                  <span className="text-[11px] font-semibold text-orange-400 tracking-wider uppercase">{tag}</span>
-                  <h3 className="text-xl font-semibold text-white leading-snug">{title}</h3>
-                  <p className="text-slate-400 leading-[1.8] max-w-xl">{body}</p>
-                  <div className="flex flex-wrap gap-x-6 gap-y-3 pt-2">
-                    {details.map((d) => (
-                      <span key={d} className="inline-flex items-center gap-2 text-sm text-slate-500">✓ {d}</span>
-                    ))}
-                  </div>
-                </div>
+                <h3 className="text-lg font-semibold text-white leading-snug">{title}</h3>
+                <p className="text-sm text-slate-400 leading-[1.8]">{body}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Free check */}
+      <section id="free-check" className="relative py-32 px-7 overflow-hidden border-t border-white/5 bg-[#0C0C0E]">
+        <div ref={chkR.ref} className="relative max-w-4xl mx-auto z-10" style={{ transition: 'opacity .75s ease, transform .75s ease', opacity: chkR.shown ? 1 : 0, transform: chkR.shown ? 'translateY(0)' : 'translateY(28px)' }}>
+          <div className="text-center mb-16">
+            <span className="text-xs font-semibold tracking-widest text-orange-400 uppercase">Free, no obligation</span>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-white tracking-tight">Try it on 10 of your past shipments</h2>
+            <p className="mt-5 text-slate-500 max-w-md mx-auto text-base leading-[1.8]">See what it finds in documents you already know, before you decide anything.</p>
+          </div>
+
+          <ol className="grid md:grid-cols-3 gap-10 md:gap-8">
+            {CHECK_STEPS.map(({ title, body }, i) => (
+              <li key={title} className="text-center space-y-2">
+                <span className="inline-flex w-9 h-9 items-center justify-center rounded-full border border-white/10 text-sm text-slate-300 tabular-nums">{i + 1}</span>
+                <h3 className="pt-2 text-base font-semibold text-white">{title}</h3>
+                <p className="text-sm text-slate-400 leading-[1.75] max-w-xs mx-auto">{body}</p>
+              </li>
+            ))}
+          </ol>
+
+          <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button onClick={() => go('contact')} className="btn-metallic font-medium px-8 py-4 rounded-lg text-[15px] w-full sm:w-auto">
+              Get my free check →
+            </button>
+            <a href={PHONE_HREF} className="inline-flex items-center justify-center text-slate-300 hover:text-white px-8 py-4 rounded-lg transition-colors duration-200 text-[15px] frame-silver frame-silver-hover bg-white/[0.01] w-full sm:w-auto">
+              Call {PHONE_DISPLAY}
+            </a>
           </div>
         </div>
       </section>
@@ -268,13 +293,14 @@ export default function App() {
       <section id="contact" className="relative py-32 px-7 overflow-hidden border-t border-white/5 bg-[#0C0C0E]">
         <div ref={ctaR.ref} className="relative max-w-xl mx-auto z-10" style={{ transition: 'opacity .75s ease, transform .75s ease', opacity: ctaR.shown ? 1 : 0, transform: ctaR.shown ? 'translateY(0)' : 'translateY(28px)' }}>
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-white tracking-tight">Book a Walkthrough</h2>
+            <h2 className="text-3xl font-bold text-white tracking-tight">Get your free check</h2>
+            <p className="mt-5 text-slate-400 max-w-md mx-auto text-base leading-[1.8]">Tell us a little about your shipments, or ask for a walkthrough first. You'll hear back from Joshua Irwin, CoreLink's founder.</p>
           </div>
 
           {status === 'done' ? (
             <div className="bg-[#111115] border border-white/5 rounded-2xl p-12 text-center backdrop-blur-md">
               <h3 className="text-white font-semibold text-lg mb-2">Request received</h3>
-              <p className="text-slate-400 text-sm">We will reach out within one business day to schedule your walkthrough.</p>
+              <p className="text-slate-400 text-sm">We'll be in touch within one business day.</p>
             </div>
           ) : (
             <form onSubmit={submit} className="bg-[#111115]/90 border border-white/5 rounded-2xl p-9 space-y-6 backdrop-blur-sm">
@@ -304,14 +330,29 @@ export default function App() {
               </div>
               
               {status === 'fail' && (
-                <p className="text-xs text-red-400">Submission transmission failed. Please review values or email us directly.</p>
+                <p className="text-xs text-red-400">That didn't send. Please try again, or email us directly at {EMAIL}.</p>
               )}
 
               <button type="submit" disabled={status === 'sending'} className="btn-metallic w-full font-medium py-4 rounded-lg text-[15px]">
-                {status === 'sending' ? 'Sending...' : 'Book My Walkthrough'}
+                {status === 'sending' ? 'Sending...' : 'Send my request'}
               </button>
             </form>
           )}
+
+          <dl className="mt-12 flex flex-wrap justify-center gap-x-12 gap-y-6 text-center">
+            <div>
+              <dt className="text-xs font-semibold tracking-widest text-slate-500 uppercase mb-1">Email</dt>
+              <dd><a href={`mailto:${EMAIL}`} className="text-[15px] text-white hover:text-orange-400 transition-colors whitespace-nowrap">{EMAIL}</a></dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold tracking-widest text-slate-500 uppercase mb-1">Phone</dt>
+              <dd><a href={PHONE_HREF} className="text-[15px] text-white hover:text-orange-400 transition-colors whitespace-nowrap">{PHONE_DISPLAY}</a></dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold tracking-widest text-slate-500 uppercase mb-1">Your contact</dt>
+              <dd className="text-[15px] text-white">Joshua Irwin, Founder</dd>
+            </div>
+          </dl>
         </div>
       </section>
 
