@@ -307,7 +307,7 @@ export default function Home() {
           <div className={head}>
             <div className={`${label} mb-5`}>02 · What we build</div>
             <h2 className={heading}>Custom solutions, sized for your business.</h2>
-            <p className={sub}>Every business runs differently, so nothing here is a template. We build the piece that removes the most work for you, and make it fit the tools you already use.</p>
+            <p className={sub}>Every business runs differently, so nothing here is a template. We find where AI will make the biggest difference for you, choose the setup that gives the best return for the cost, then build it and get it working with the tools you already use.</p>
           </div>
           <div className="mt-14 grid sm:grid-cols-2 gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden">
             {BUILDS.map(({ title, body }) => (
